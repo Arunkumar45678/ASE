@@ -16,18 +16,12 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
         
     - name: Install dependencies
       run: npm install
       
-    - name: Install EAS CLI globally
+    - name: Install EAS CLI
       run: npm install -g @expo/eas-cli
-      
-    - name: Setup Expo
-      run: |
-        npx expo install --check
-        npx expo config --help
       
     - name: Build Android APK with EAS
       run: eas build --platform android --non-interactive
