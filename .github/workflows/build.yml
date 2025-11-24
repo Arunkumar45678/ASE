@@ -16,13 +16,15 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        # REMOVED cache: 'npm' - this is causing the error
         
     - name: Install dependencies
       run: npm install
       
-    - name: Build with EAS
-      run: npx @expo/eas-cli@latest build --platform android
+    - name: Install EAS CLI
+      run: npm install -g eas-cli
+      
+    - name: Build Android APK
+      run: eas build --platform android
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         CI: true
