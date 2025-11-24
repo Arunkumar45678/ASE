@@ -1,46 +1,27 @@
-name: Build Expo App
+name: Expo EAS Build
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm install
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          
+      - run: npm install
       
-    - name: Setup Expo
-      uses: expo/expo-github-action@v8
-      with:
-        expo-version: latest
-        token: ${{ secrets.EXPO_TOKEN }}
-        
-    - name: Build Android APK
-      run: |
-        npx expo prebuild
-        eas build --platform android --non-interactive --no-wait
-      env:
-        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-files
-        path: |
-          android/
-          ios/
-        retention-days: 7
+      - uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+          
+      - run: eas build --platform android --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
