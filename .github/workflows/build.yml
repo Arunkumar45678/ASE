@@ -20,7 +20,10 @@ jobs:
     - name: Install dependencies
       run: npm install
       
-    - name: Build with Expo
-      run: npx expo build:android --non-interactive
+    - name: Install Expo CLI and EAS
+      run: |
+        npm install -g @expo/cli
+        npx @expo/cli eas build --platform android --non-interactive
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        CI: true
