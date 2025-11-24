@@ -22,6 +22,9 @@ jobs:
         rm -rf node_modules
         npm install --legacy-peer-deps --force
         
+    - name: Install EAS CLI globally
+      run: npm install -g @expo/eas-cli
+      
     - name: Build Android APK
       run: eas build --platform android
       env:
