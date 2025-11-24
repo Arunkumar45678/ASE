@@ -1,4 +1,4 @@
-name: Build APK
+name: Build Expo Android APK
 
 on:
   push:
@@ -7,13 +7,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - run: npm install --legacy-peer-deps --force
-      - run: npx eas-cli build --platform android
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-          CI: true
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies with exact versions
+      run: |
+        rm -rf node_modules
+        npm install expo@~49.0.0 react@18.2.0 react-native@0.72.0 --legacy-peer-deps --force
+        npm install @expo/vector-icons @react-navigation/native @react-navigation/bottom-tabs @react-navigation/drawer @react-navigation/stack --legacy-peer-deps --force
+        
+    - name: Build Android APK
+      run: npx eas-cli build --platform android
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        CI: true
