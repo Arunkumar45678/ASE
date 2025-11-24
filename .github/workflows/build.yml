@@ -15,15 +15,14 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'  # Changed from 18 to 20
+        cache: 'npm'
         
     - name: Install dependencies
       run: npm install
       
-    - name: Install Expo CLI and EAS
-      run: |
-        npm install -g @expo/cli
-        npx @expo/cli eas build --platform android --non-interactive
+    - name: Build with EAS
+      run: npx @expo/eas-cli@latest build --platform android
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        CI: true
+        CI: true  # This replaces --non-interactive
