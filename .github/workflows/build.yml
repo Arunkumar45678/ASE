@@ -1,4 +1,4 @@
-name: Build Expo App
+name: Build Expo Android APK
 
 on:
   push:
@@ -16,17 +16,20 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
+        cache: 'npm'
         
     - name: Install dependencies
       run: npm install
       
+    - name: Install EAS CLI globally
+      run: npm install -g @expo/eas-cli
+      
     - name: Setup Expo
-      uses: expo/expo-github-action@v8
-      with:
-        expo-version: latest
-        token: ${{ secrets.EXPO_TOKEN }}
-        
-    - name: Build Android APK
+      run: |
+        npx expo install --check
+        npx expo config --help
+      
+    - name: Build Android APK with EAS
       run: eas build --platform android --non-interactive
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
