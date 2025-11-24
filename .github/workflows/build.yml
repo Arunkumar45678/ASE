@@ -15,8 +15,8 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'  # Changed from 18 to 20
-        cache: 'npm'
+        node-version: '20'
+        # REMOVED cache: 'npm' - this is causing the error
         
     - name: Install dependencies
       run: npm install
@@ -25,4 +25,4 @@ jobs:
       run: npx @expo/eas-cli@latest build --platform android
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        CI: true  # This replaces --non-interactive
+        CI: true
