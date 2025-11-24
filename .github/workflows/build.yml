@@ -17,16 +17,11 @@ jobs:
       with:
         node-version: '18'
         
-    - name: Clean install dependencies
-      run: |
-        rm -rf node_modules
-        npm install --legacy-peer-deps --force
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps --force
         
-    - name: Install EAS CLI globally
-      run: npm install -g @expo/eas-cli
-      
-    - name: Build Android APK
-      run: eas build --platform android
+    - name: Build with Expo CLI
+      run: npx @expo/cli build:android -t apk
       env:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         CI: true
